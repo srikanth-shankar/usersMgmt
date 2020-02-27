@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const bcrypt = require('bcryptjs');
 
 // postman -> http://localhost:3000/api/users
 exports.getUsers = (req, res, next) => {
@@ -12,6 +13,7 @@ exports.getUsers = (req, res, next) => {
 //postman -> http://localhost:3000/api/users/add-user  choose post and give the json body with the required parameters
 exports.createUser = (req, res, next) => {
     const {name, email, pwd, isAdminRole} = req.body;
+    pwd = bcrypt.hashSync(pwd, 8);
     const user = new User({name, email, pwd, isAdminRole});
     user.save()
         .then((result) => {
