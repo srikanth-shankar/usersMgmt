@@ -16,7 +16,7 @@ exports.createUser = (req, res, next) => {
     user.save()
         .then((result) => {
             console.log('created user');
-            return res.send(user);
+            return res.status(201).send(user);
         })
         .catch(err => {
             console.log('err = ', err);
@@ -36,6 +36,8 @@ exports.deleteUser = (req, res, next) => {
     // return res.send('<h1>delete user</h1>');
 };
 
+// postman -> http://localhost:3000/api/users/getUserByName/rob
+// can also use a debounce in a ui typeahead kind where we can load the typeahead with the name that has "contains query" instead of an exact match.
 exports.getUserByName = (req, res, next) => {
     User.findOne({name: req.params.name}, {'_id': 0, 'pwd': 0}, ((err, user) =>{
             if(!!user)
