@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 // postman -> http://localhost:3000/api/users
 exports.getUsers = (req, res, next) => {
     // return res.send('<h1>get users</h1>')
-    User.find()
+    User.find({}, {'_id': 0, 'pwd': 0})
         .then(userDocs => {
             return res.status(200).send(userDocs);
         });
@@ -34,4 +34,13 @@ exports.deleteUser = (req, res, next) => {
             console.log(err);
         })
     // return res.send('<h1>delete user</h1>');
+};
+
+exports.getUserByName = (req, res, next) => {
+    User.findOne({name: req.params.name}, {'_id': 0, 'pwd': 0}, ((err, user) =>{
+            if(!!user)
+                return res.status(200).send({'user': user})
+
+            return res.status(404).send('user not found')
+    }))
 };
